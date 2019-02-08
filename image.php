@@ -11,19 +11,18 @@
         //エミュ変更
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
 
-        $sql = "SELECT * FROM user WHERE id=? AND password=?";
+        $sql = "SELECT * FROM user WHERE image=?";
         $ps = $pdo->prepare($sql);
         $ps->bindValue(1,$id);
-        $ps->bindValue(2,$pass);
 
-        $ps->execute();
-        $recorde = $ps->fetchAll(PDO::FETCH_ASSOC);
-        if (!empty($recorde)) {
+        $result = $ps->execute();
+        if (isset($result)) {
+            $recorde = $ps->fetchAll(PDO::FETCH_ASSOC);
             $_SESSION["login_user"] = $recorde["id"];
-            header("location:./view_products.php");
+            header("location:./view.php");
         }
         else {
-            header("location:./index.html");
+            header("location:./user.php");
         }
     } catch ( Exception $e) {
         echo $e->getMessage();
